@@ -171,3 +171,65 @@ You will need to add it at both place inside the constructor:
 ```
 
 #### Add the answer inside the database
+
+You will need to modify the [answers.js](https://github.com/micbelgique/SurveyBot/blob/master/template/survey/answers.js) file. You will need to add the possible answer of your question like that:
+
+```javascript
+class Answers {
+    constructor(
+        simpleQuestion,
+        complexQuestion,
+        myNameQuestion
+    ) {
+        this.simpleQuestion = simpleQuestion;
+        this.complexQuestion = complexQuestion;
+        this.myNameQuestion = myNameQuestion
+    }
+}
+```
+
+And after that, you need to go inside the [DataManager](https://github.com/micbelgique/SurveyBot/blob/master/template/helpers/dataManager.js).
+
+Inside it, you can change the name of your table like that you don't have conflict problem and add a column for your answer like that:
+
+```javascript
+getTable() {
+        const table = new sql.Table('survey2'); // or temporary table, e.g. #temptable
+
+        table.columns.add('language', sql.VarChar(10), { nullable: true });
+        table.columns.add('simpleQuestion', sql.Int, { nullable: true });
+        table.columns.add('complexQuestion', sql.NVarChar(sql.MAX), { nullable: true });
+        table.columns.add('myNameQuestion', sql.Int, { nullable: true });
+        table.columns.add('environment', sql.VarChar(50), { nullable: true });
+
+        return table;
+    }
+```
+
+And inside the function storeData(), you will need to add your new answer like that
+
+```javascript
+storeData(answers) {
+        const table = this.getTable();
+        table.rows.add(
+            answers.language,
+            answers.simpleQuestion,
+            answers.complexQuestion,
+            answers.myNameQuestion
+            process.env.NODE_ENV
+        );
+        table.create = true;
+
+        return this.getConnection().then((pool) => {
+            const request = new sql.Request(pool);
+            request.bulk(table, (err, result) => {
+                console.log(JSON.stringify(err));
+                console.log(JSON.stringify(result));
+            });
+        });
+    }
+```
+
+### Create a complex question
+
+You can go [here](https://github.com/micbelgique/SurveyBot/blob/master/modifyBotComplexQuestion.md).
