@@ -75,3 +75,13 @@ Or you can use Excel also to retrieve the data and you can see how to do it [her
 ## Edit the bot
 
 To learn how to edit the bot, click [here](https://github.com/micbelgique/SurveyBot/blob/master/modifyBot.md).
+
+## Deploy it on Azure
+
+If you want to deploy it on Azure, you can follow [these steps](https://docs.microsoft.com/en-us/azure/bot-service/bot-builder-deploy-az-cli?view=azure-bot-service-4.0&tabs=javascript).
+
+## Example of Integration
+
+You can find an example of integration of the bot inside integrationExample folder.
+
+It's a React app that start directly the conversation with your bot.
